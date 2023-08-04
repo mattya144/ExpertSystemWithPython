@@ -91,7 +91,7 @@ def count_pos_patterns(documents):
 
             if key_str not in pos_patterns:
                 pos_patterns.append(key_str)
-                # パターンが現れたドキュメント -> 1 , それ以外　-> 0
+                # document include pos pattern -> 1 , other　-> 0
                 for i in range(len(pos_vectors)): # loop for K1, K2, Q
                     if i == docId:
                         pos_vectors[i].append(1)
@@ -105,10 +105,10 @@ def count_pos_patterns(documents):
     return (pos_patterns, pos_vectors)
 
 
-# start からend までのIDの配列を返す
+# return ID array start ot end
 def extract_features(freq_vector, start=0, end=20):
 
-    setX = set(freq_vector) # 最大値を順に取り出すため set を作成
+    setX = set(freq_vector) # create set to extract max value in order
 
     count = 0
 
@@ -154,7 +154,7 @@ def predict(Q_df,K_df):
                 score = get_similarity(feature_vector,Q_features)
                 similarityWithQ[author]=score
 
-        # innocent_list に含まれない著者の中から1人を選ぶ
+        # choise one author not contain in innocent_list
 
         innocent = min(similarityWithQ, key=similarityWithQ.get)
         if input(f'Do you want to rule out {innocent} in top {end} patterns ? (y/n) ') == 'y':
