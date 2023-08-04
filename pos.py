@@ -15,13 +15,13 @@ def main():
     global df
 ### Initial running
 ### Open each txt files K1,K2,Q1
-    with open("./K1_dataset.txt") as f:
+    with open(".data//K1_dataset.txt") as f:
         K1_txt = f.read()
 
-    with open("./K2_dataset.txt") as f:
+    with open(".data//K2_dataset.txt") as f:
         K2_txt = f.read()
 
-    with open("./Q_dataset.txt") as f:
+    with open(".data/Q_dataset.txt") as f:
         Q_txt = f.read()
 
 # Define dataframe
