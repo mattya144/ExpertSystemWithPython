@@ -15,13 +15,13 @@ def main():
     global df
 ### Initial running
 ### Open each txt files K1,K2,Q1
-    with open(".data//K1_dataset.txt") as f:
+    with open("./data/K1_dataset.txt") as f:
         K1_txt = f.read()
 
-    with open(".data//K2_dataset.txt") as f:
+    with open("./data/K2_dataset.txt") as f:
         K2_txt = f.read()
 
-    with open(".data/Q_dataset.txt") as f:
+    with open("./data/Q_dataset.txt") as f:
         Q_txt = f.read()
 
 # Define dataframe
@@ -69,11 +69,12 @@ def main():
 
 
 # This function returns a list of tuples of (word, PoS) from a Q,K1,K2 text files.
+# Feature 7
 def create_word_pos_list(message):
     tokenized_txt = nltk.word_tokenize(message)
     return nltk.pos_tag(tokenized_txt)
 
-# WINDOW_SIZE is 
+# Feature 10
 WINDOW_SIZE = 2
 def count_pos_patterns(documents):
     width = WINDOW_SIZE
@@ -155,13 +156,16 @@ def predict(Q_df,K_df):
                 similarityWithQ[author]=score
 
         # choise one author not contain in innocent_list
-
+        # Feature 11
         innocent = min(similarityWithQ, key=similarityWithQ.get)
+        # Feature 12   
         if input(f'Do you want to rule out {innocent} in top {end} patterns ? (y/n) ') == 'y':
             suspected.remove(innocent)
         end += 20
     return suspected[0]
 
+# Feature 8
+# Feature 9
 def search(query_string):
     query = query_string.split()
     print("query : ", query)
@@ -176,9 +180,12 @@ def search(query_string):
                 if len(query)>1:
 
                     for i, query_following in enumerate(query[1:]):
-                        w_following = document[idx+1+i][0] # follwoing word in the document
-                        pos_following = document[idx+1+i][1] # follwoing pos in the document
-                        if query_following.casefold() == w_following.casefold() or query_following == pos_following:
+                        try:
+                            word_following = document[idx+1+i][0] # follwoing word in the document
+                            pos_following = document[idx+1+i][1] # follwoing pos in the document
+                        except: # if cannot access the index
+                            break
+                        if query_following.casefold() == word_following.casefold() or query_following == pos_following:
                             continue
                         foundFlg = False
                     
