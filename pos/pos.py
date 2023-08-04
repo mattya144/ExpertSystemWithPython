@@ -14,6 +14,7 @@ df = None # global
 def main():
     global df
 ### Initial running
+### Open each txt files K1,K2,Q1
     with open("./K1_dataset.txt") as f:
         K1_txt = f.read()
 
@@ -23,15 +24,25 @@ def main():
     with open("./Q_dataset.txt") as f:
         Q_txt = f.read()
 
+# Define dataframe
+
     df = pd.DataFrame([
         ["K1", K1_txt], 
         ["K2", K2_txt],
         ["Q", Q_txt]
     ],
     columns=['author', 'message'],)
-
     df.insert(2,"word_pos_list",[ create_word_pos_list(message) for message in df['message']],True)
 
+# Define these table
+    """
+    | author | message | word_pos_list    |
+    |   K1   | K1_text | K1_word_pos_list |
+    |   K2   | K2_text | K2_word_pos_list |
+    |   Q    | Q_text  | Q_word_pos_list  |
+    """
+
+# The user enters 1, 2, or 3 as an integer, and the operation is performed according to the number entered.
 
     while True:
         input_num = input('''Select the operation
@@ -39,9 +50,11 @@ def main():
     2: Identify the suspected
     3: Exit
 ==> ''')
+        # Search word pattern: word + POS(e.g absolutely JJ) and display the pattern
         if input_num == '1':
             query = input("Input Query: ")
             search(query)
+        # Detect who Q text write(K1 or K2) and display the suspecter(K1 or K2).
         elif input_num == '2':
             pos_patterns, pos_vectors = count_pos_patterns(df['word_pos_list'])
             df['pos_vec'] = pos_vectors
@@ -50,23 +63,23 @@ def main():
             most_suspected = predict(Q_df, K_df)
             print(BLUE + f"Most suspected :{most_suspected}" + END )
             sys.exit(0)
-
+        # Exit the operation
         elif input_num == '3':
             sys.exit(0)
 
 
-'''
-This function returns a list of tuples of (word, PoS) from a document.
-'''
+# This function returns a list of tuples of (word, PoS) from a Q,K1,K2 text files.
 def create_word_pos_list(message):
     tokenized_txt = nltk.word_tokenize(message)
     return nltk.pos_tag(tokenized_txt)
 
+# WINDOW_SIZE is 
 WINDOW_SIZE = 2
 def count_pos_patterns(documents):
     width = WINDOW_SIZE
     pos_patterns = []
     pos_vectors = [[] for _ in range(len(documents))]
+    # define empty array to store pos_vector
     for docId, document in enumerate(documents):
         len_doc = len(document)
         for i in range(len_doc - (width-1)):
