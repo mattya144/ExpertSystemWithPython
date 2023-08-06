@@ -6,9 +6,11 @@ Feature number annotation is written in pos.ipynb
 
 You can work code using pos.py
 
-## identifyTFTK.ipynb description
+## IdentifyTFTK.ipynb, IdentifyTFTK.py description
 
-Feature number annotation is written in this file
+Feature number annotation is written in IdentifyTFTK.ipynb
+
+You can work code using IdentifyTFTK
 
 ## How to setup
 
