@@ -6,9 +6,9 @@ Feature number annotation is written in pos.ipynb
 
 You can work code using pos.py
 
-## keyness の説明を書く
+## identifyTFTK.ipynb description
 
-ファイル名がわからないので保留
+Feature number annotation is written in this file
 
 ## How to setup
 
