@@ -634,6 +634,7 @@ def predict(questioned_vector,candidates_vectors):
             candidates_vector_tf = [candidates_items[2]] 
             candidates_vector_keyness = [candidates_items[4]]
             if author in suspected:
+                print('*********************************')
                 print('Analysed Author Information')
                 #tf-------------------
                 C_features_tf = extract_features(candidates_vector_tf, words, start, end)
@@ -646,7 +647,6 @@ def predict(questioned_vector,candidates_vectors):
                 score_keyness = get_similarity(C_features_keyness,Q_features_keyness)
                 similarityWithQ_keyness[author]=score_keyness
                 print(f'{author}\'s similality keyness score = {score_keyness}')
-                print('...')
         innocent = min(similarityWithQ_keyness, key=similarityWithQ_keyness.get)
         suspect =  max(similarityWithQ_tf, key=similarityWithQ_tf.get)
 
@@ -660,10 +660,10 @@ def predict(questioned_vector,candidates_vectors):
                 print('*********************************')
                 return suspect
             print('*********************************')
-            print(f'The MOST suspectful auther based on shared keyword frequency: {suspect}')
-            print(f'The LEAST suspectful auther based on Keyness: {innocent}')
+            print(f'The MOST suspect auther based on shared keyword frequency: {suspect}')
+            print(f'The LEAST suspect auther based on Keyness: {innocent}')
             print('*********************************')
-            act = input(f'Do you wan to remove the LEAST suspectful one from searching, \"{innocent}\"?(yes: 1, no: 0)')
+            act = input(f'Do you wan to remove the LEAST suspectful one from searching, \"{innocent}\"? \nOr Do you wan to continue searching top {end+20}?(yes: 1, search: 0): ')
             try:
                 if(int(act) == 1):
                     print('...')
@@ -671,7 +671,10 @@ def predict(questioned_vector,candidates_vectors):
                     suspected.remove(innocent)
                 else:
                     print('...')
-                    print('Go to next 20 words searching')
+                    print(f'Go to top {end + 20} words searching')
+                    print('...')
+                    print('...')
+                    print('...')
                     break
             except:
                 print('Please input decimal number\n')
@@ -700,152 +703,3 @@ references_df
 
 suspect = predict(questioned_df, references_df)
 # suspect = predict(questioned_df, df)
-
-
-# # Garbege codes
-
-# ## Check function in Train Data
-
-# In[72]:
-
-
-i = 0
-bad_guy = predict(df['keyness'][i], reference_vectors)
-print(f'bad guy : {bad_guy}')
-print('-'*20)
-print(f"True author : {df['author'][i]}")
-
-# In[ ]:
-
-
-# all_test_data = len(X_keyness_test)# 
-
-# In[ ]:
-
-
-# match_cnt = 0
-# all_test_data = len(X_keyness_train)
-# for i in X_keyness_train.index:
-#     bad_guy = predict(df['keyness'][i], reference_vectors)
-#     if df['author'][i] == bad_guy:
-#         match_cnt = match_cnt + 1
-
-# print(f'Math rate is: {match_cnt/all_test_data*100} % ')
-#     #print(f'bad guy : {bad_guy}')
-#     #print('-'*20)
-#     #print(f"True author : {df['author'][i]}")
-
-# In[ ]:
-
-
-# def predict(questioned_vector, reference_vectors):
-#     suspected = [author for author in authors]
-
-#     comparedSize = 20
-#     while(len(suspected) > 1):
-
-# In[ ]:
-
-
-# def dispAndMakeSharedKeywordFreq(df,df_ref):
-#     df = df[df['words'].isin(df_ref['words'])] #filtering with the words in df2
-#     df_ref = df_ref[df_ref['words'].isin(df['words'])] #filtering with the words in df
-#     #now the words in df and df2 are same
-#     #sort words in the alphabetical order to become the same words as the same rows
-#     df = df.sort_values('words')
-#     df_ref = df_ref.sort_values('words')
-#     #merge df2 frequency to df1 
-#     df['ref_frequency'] = list(df_ref['frequency'])
-#     df['shared_word_keyword_frequency'] = (df['frequency'] + df['ref_frequency'])
-#     return df
-## Keyword Frequency in Dataset Q and Ref
-#KF = Keyword Frequency
-# KF_QandRef = dispAndMakeSharedKeywordFreq(wf_list_Q,wf_list_ref)
-# KF_QandRef.sort_values('frequency', ascending=False).head(20)
-# ## Keyword Frequency in Dataset K1 and Ref
-# #KF = Shared Keyword Frequency
-# KF_QandRef = dispAndMakeSharedKeywordFreq(wf_list_K1,wf_list_ref)
-# KF_QandRef.sort_values('frequency', ascending=False).head(20)
-# ## Keyword Frequency in Dataset K2 and Ref
-# #KF = Shared Keyword Frequency
-# KF_QandRef = dispAndMakeSharedKeywordFreq(wf_list_K2,wf_list_ref)
-# KF_QandRef.sort_values('frequency', ascending=False).head(20)
-
-# In[ ]:
-
-
-# import nltk
-# from nltk.corpus import stopwords
-
-# nltk.download('stopwords')
-# stop_words = stopwords.words('english')
-
-# In[ ]:
-
-
-# #確認用
-# i = 22
-# msg = df['message'][i]
-# max_value = max(keyness_mat[i])
-# max_idx = keyness_mat[i].index(max_value)
-# print(words[max_idx])
-
-# print(msg)
-# #print(df['author'][i])
-
-
-# In[ ]:
-
-
-# from sklearn.model_selection import train_test_split
-# X_keyness_train, X_keyness_test, Y_keyness_train, Y_keyness_test = train_test_split(df['keyness'],df['author'],test_size=0.2,shuffle=True)
-# X_tf_train, X_tf_test, Y_tf_train, Y_tf_test = train_test_split(df['tf'],df['author'],test_size=0.2,shuffle=True)
-
-# In[ ]:
-
-
-# # How many author?
-# authors = set(Y_keyness_test)
-# authors_list = [author for author in authors]
-
-# # Create Reference_vectors
-# size: 著者の数
-# 
-# Train データから作る
-
-# In[ ]:
-
-
-# # df_X = pd.DataFrame(X_tf_train.values.tolist())
-# # df_Y = pd.DataFrame(Y_tf_train.values.tolist())
-
-
-# df_train = pd.concat((X_keyness_train, Y_keyness_train.rename('author')), axis=1)
-# #
-# reference_vectors = {}
-# for author in authors:
-
-#     df_author = df_train.groupby('author').get_group(author)
-
-#     matrix = []
-#     for row in df_author['keyness']:
-#         matrix.append(row)
-
-#     np_matrix = np.array(matrix)
-
-#     mean_vector = np_matrix.mean(axis=0)
-#     reference_vectors[author] = mean_vector.tolist()
-
-# In[ ]:
-
-
-# for author, ref_vec in reference_vectors.items():
-#     max_value = max(ref_vec)
-#     max_idx =ref_vec.index(max_value)
-#     print(f'{author}: {words[max_idx]}')
-
-
-# In[ ]:
-
-
-# authors
